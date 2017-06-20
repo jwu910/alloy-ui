@@ -159,6 +159,11 @@ A.mix(DatePickerBase.prototype, {
             calendar.after(
                 'dateClick', instance._afterCalendarDateClick,
                 instance);
+            calendar.after(
+                'dateEnter', instance._afterCalendarDateEnter,
+                instance);
+
+            console.log("inside get calendar! fired below calender.afters");
 
             // Restore the original CalendarBase template.
             A.CalendarBase.CONTENT_TEMPLATE = originalCalendarTemplate;
@@ -228,6 +233,21 @@ A.mix(DatePickerBase.prototype, {
      * @protected
      */
     _afterCalendarDateClick: function() {
+        var instance = this,
+            calendar = instance.getCalendar(),
+            selectionMode = calendar.get('selectionMode');
+
+        console.log("HELLOOO inside afterCalendarDateClick event");
+        console.log(instance);
+        console.log(calendar);
+        console.log(selectionMode);
+
+        if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
+            instance.hide();
+        }
+    },
+
+    _afterCalendarDateEnter: function() {
         var instance = this,
             calendar = instance.getCalendar(),
             selectionMode = calendar.get('selectionMode');

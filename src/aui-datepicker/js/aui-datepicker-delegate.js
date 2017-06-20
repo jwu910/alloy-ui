@@ -9,6 +9,7 @@ var Lang = A.Lang,
     isString = Lang.isString,
 
     EVENT_ENTER_KEY = 'enterKey',
+    EVENT_TAB_KEY = 'tabKey',
 
     _DOCUMENT = A.one(A.config.doc);
 
