@@ -8,31 +8,6 @@ var Lang = A.Lang,
     clamp = function(value, min, max) {
         return Math.min(Math.max(value, min), max);
     },
-    getCN = A.getClassName,
-
-    CSS_IMAGE_VIEWER_CONTROL = getCN('image', 'viewer', 'base', 'control'),
-    CSS_IMAGE_VIEWER_CONTROL_LEFT = getCN('image', 'viewer', 'base', 'control', 'left'),
-    CSS_IMAGE_VIEWER_CONTROL_RIGHT = getCN('image', 'viewer', 'base', 'control', 'right'),
-
-    CSS_ITEM = getCN('image', 'viewer', 'base', 'image'),
-    CSS_ITEM_ACTIVE_TRANSITION = getCN('calendar', 'item', 'active', 'transition'),
-    CSS_ITEM_TRANSITION = getCN('calendar', 'item', 'transition'),
-    CSS_MENU = getCN('calendar', 'menu'),
-    CSS_MENU_ACTIVE = getCN('calendar', 'menu', 'active'),
-    CSS_MENU_INDEX = getCN('calendar', 'menu', 'index'),
-    CSS_MENU_ITEM = getCN('calendar', 'menu', 'item'),
-    CSS_MENU_NEXT = getCN('calendar', 'menu', 'next'),
-    CSS_MENU_PLAY = getCN('calendar', 'menu', 'play'),
-    CSS_MENU_PAUSE = getCN('calendar', 'menu', 'pause'),
-    CSS_MENU_PREV = getCN('calendar', 'menu', 'prev'),
-    CSS_MENU_ITEM_DEFAULT = [CSS_MENU_ITEM, CSS_MENU_INDEX].join(' '),
-    CSS_MENU_ITEM_ACTIVE = [CSS_MENU_ITEM, CSS_MENU_INDEX, CSS_MENU_ACTIVE].join(' '),
-    CSS_OUTSIDE_MENU = getCN('calendar', 'outside', 'menu'),
-
-    NODE_MENU_INSIDE = 'inside',
-    NODE_MENU_OUTSIDE = 'outside',
-
-    SELECTOR_MENU_INDEX = '.' + CSS_MENU_INDEX;
 
 /**
  * A base class for `DatePickerBase`.
@@ -123,9 +98,6 @@ A.mix(DatePickerBase.prototype, {
         var instance = this;
 
         instance.after('selectionChange', instance._afterDatePickerSelectionChange);
-        this.after({
-            render: this._afterRender
-        });
     },
 
     /**
