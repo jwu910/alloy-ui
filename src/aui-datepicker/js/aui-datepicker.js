@@ -5,9 +5,10 @@
  */
 
 var Lang = A.Lang,
+
     clamp = function(value, min, max) {
         return Math.min(Math.max(value, min), max);
-    },
+    }
 
 /**
  * A base class for `DatePickerBase`.
@@ -18,7 +19,9 @@ var Lang = A.Lang,
  * @constructor
  */
 
-function DatePickerBase() {}
+function DatePickerBase() {
+
+}
 
 /**
  * Lists `CalendarBase` pane templates.
@@ -98,6 +101,7 @@ A.mix(DatePickerBase.prototype, {
         var instance = this;
 
         instance.after('selectionChange', instance._afterDatePickerSelectionChange);
+
     },
 
     /**
@@ -268,8 +272,10 @@ A.mix(DatePickerBase.prototype, {
     */
     _afterDatePickerSelectionChange: function() {
         var instance = this;
-        instance.hide();
         instance._setCalendarToFirstSelectedDate();
+
+        // Closes calendar when enter key is pressed on date
+        instance.hide();
     },
 
     /**

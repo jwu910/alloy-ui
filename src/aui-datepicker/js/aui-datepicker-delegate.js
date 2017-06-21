@@ -258,8 +258,6 @@ DatePickerDelegate.prototype = {
         var calendarNode = A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
 
         calendarNode.focus();
-
-        // document.getElementsByClassName('yui3-calendar')[0].focus();//
     },
 
     /**
@@ -273,8 +271,13 @@ DatePickerDelegate.prototype = {
         var instance = this;
 
         instance.useInputNodeOnce(event.currentTarget);
-
         instance._userInteractionInProgress = true;
+
+
+        // Enables cyclical keyboard tabbing on calendar popup
+        var calendarNode = A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
+
+        calendarNode.focus();
     },
 
     /**
