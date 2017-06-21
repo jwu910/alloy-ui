@@ -159,9 +159,6 @@ A.mix(DatePickerBase.prototype, {
             calendar.after(
                 'dateClick', instance._afterCalendarDateClick,
                 instance);
-            calendar.after(
-                'dateEnter', instance._afterCalendarDateEnter,
-                instance);
 
             console.log("inside get calendar! fired below calender.afters");
 
@@ -214,16 +211,33 @@ A.mix(DatePickerBase.prototype, {
     useInputNode: function(node) {
         var instance = this,
             popover = instance.getPopover();
+            calendar = instance.getCalendar(),
+            selectionMode = calendar.get('selectionMode');
 
         popover.set('trigger', node);
         instance.set('activeInput', node);
 
+        //=================================DEBUG===================================/
+        console.log('instance keys ============================');
+        for (var keys in instance) {
+            console.log('key = ' + keys);
+        };
+        console.log(instance.getAttrs());
+        console.log(instance.get('activeInput')._node.localName);
+
+        //=========================================================================/
         if (!popover.get('visible')) {
             instance.alignTo(node);
         }
 
         instance.clearSelection(true);
         instance.selectDatesFromInputValue(instance.getParsedDatesFromInputValue());
+
+        // if current node is an input field, auto show and focus calendar
+        if ((instance.get('activeInput')._node.localName === 'input') && (selectionMode !== 'multiple')) {
+            popover.set('visible', true);
+            popover.focus();
+        }
     },
 
     /**
@@ -237,20 +251,7 @@ A.mix(DatePickerBase.prototype, {
             calendar = instance.getCalendar(),
             selectionMode = calendar.get('selectionMode');
 
-        console.log("HELLOOO inside afterCalendarDateClick event");
-        console.log(instance);
         console.log(calendar);
-        console.log(selectionMode);
-
-        if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
-            instance.hide();
-        }
-    },
-
-    _afterCalendarDateEnter: function() {
-        var instance = this,
-            calendar = instance.getCalendar(),
-            selectionMode = calendar.get('selectionMode');
 
         if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
             instance.hide();

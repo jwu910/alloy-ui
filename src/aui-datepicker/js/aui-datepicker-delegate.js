@@ -237,6 +237,9 @@ DatePickerDelegate.prototype = {
 
         if (event.isKey('enter')) {
             instance.fire(EVENT_ENTER_KEY);
+        } else if (event.isKey('tab')) {
+            instance.fire(EVENT_TAB_KEY);
+            console.log('event is = ' + event);
         }
     },
 
@@ -247,7 +250,11 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _handleTabKeyEvent: function() {
-        this.hide();
+        var popupChildren = A.one('.' + this._attrs.popoverCssClass.value).get('children'),
+            calendar = popupChildren._nodes[0].lastChild.firstChild;
+        if (calendar) {
+            calendar.focus();
+        }
     },
 
     /**
