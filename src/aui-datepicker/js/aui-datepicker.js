@@ -5,7 +5,6 @@
  */
 
 var Lang = A.Lang,
-
     clamp = function(value, min, max) {
         return Math.min(Math.max(value, min), max);
     }
@@ -101,7 +100,6 @@ A.mix(DatePickerBase.prototype, {
         var instance = this;
 
         instance.after('selectionChange', instance._afterDatePickerSelectionChange);
-
     },
 
     /**
