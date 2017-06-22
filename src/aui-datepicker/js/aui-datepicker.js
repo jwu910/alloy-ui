@@ -8,7 +8,7 @@ var Lang = A.Lang,
 
     clamp = function(value, min, max) {
         return Math.min(Math.max(value, min), max);
-    };
+    }
 
 /**
  * A base class for `DatePickerBase`.
@@ -19,7 +19,9 @@ var Lang = A.Lang,
  * @constructor
  */
 
-function DatePickerBase() {}
+function DatePickerBase() {
+
+}
 
 /**
  * Lists `CalendarBase` pane templates.
@@ -99,6 +101,7 @@ A.mix(DatePickerBase.prototype, {
         var instance = this;
 
         instance.after('selectionChange', instance._afterDatePickerSelectionChange);
+
     },
 
     /**
@@ -241,12 +244,12 @@ A.mix(DatePickerBase.prototype, {
     },
 
     /**
-     * Fires after a click in the `Calendar` date.
-     *
-     * @method _afterCalendarDateClick
-     * @protected
-     */
-    _afterCalendarDateClick: function() {
+    * Fires after a click in the `Calendar` date.
+    *
+    * @method _afterCalendarDateClick
+    * @protected
+    */
+    _afterCalendarDateClick: function(event) {
         var instance = this,
             calendar = instance.getCalendar(),
             selectionMode = calendar.get('selectionMode');
@@ -259,12 +262,12 @@ A.mix(DatePickerBase.prototype, {
     },
 
     /**
-     * Fires after a selection change in the `Calendar`.
-     *
-     * @method _afterCalendarSelectionChange
-     * @param event
-     * @protected
-     */
+    * Fires after a selection change in the `Calendar`.
+    *
+    * @method _afterCalendarSelectionChange
+    * @param event
+    * @protected
+    */
     _afterCalendarSelectionChange: function(event) {
         var instance = this,
             newDates,
@@ -283,26 +286,28 @@ A.mix(DatePickerBase.prototype, {
     },
 
     /**
-     * Fires when a selection change in the `DatePicker`.
-     *
-     * @method _afterDatePickerSelectionChange
-     * @protected
-     */
+    * Fires when a selection change in the `DatePicker`.
+    *
+    * @method _afterDatePickerSelectionChange
+    * @protected
+    */
     _afterDatePickerSelectionChange: function() {
         var instance = this;
-
         instance._setCalendarToFirstSelectedDate();
+
+        // Closes calendar when enter key is pressed on date
+        instance.hide();
     },
 
     /**
-     * Checks if the given dates are referencing the same
-     * day, month and year.
-     *
-     * @method _isSameDay
-     * @param date1
-     * @param date2
-     * @protected
-     */
+    * Checks if the given dates are referencing the same
+    * day, month and year.
+    *
+    * @method _isSameDay
+    * @param date1
+    * @param date2
+    * @protected
+    */
     _isSameDay: function(date1, date2) {
         return date1.getDate() === date2.getDate() &&
             date1.getMonth() === date2.getMonth() &&
@@ -370,7 +375,9 @@ A.mix(DatePickerBase.prototype, {
      */
     _setPanes: function(val) {
         return clamp(val, 1, 3);
-    }
+    },
+
+
 }, true);
 
 A.DatePickerBase = DatePickerBase;

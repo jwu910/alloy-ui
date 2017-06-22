@@ -7,11 +7,17 @@
 
 var Lang = A.Lang,
     isString = Lang.isString,
-
     EVENT_ENTER_KEY = 'enterKey',
     EVENT_TAB_KEY = 'tabKey',
+    
+    _DOCUMENT = A.one(A.config.doc),
 
-    _DOCUMENT = A.one(A.config.doc);
+    getCN = A.getClassName,
+
+    CSS_PREFIX = 'yui3',
+    CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar');
+
+
 
 /**
  * Fired when then enter key is pressed on an input node.
@@ -46,6 +52,10 @@ DatePickerDelegate.prototype = {
         var instance = this;
 
         instance.bindDelegateUI();
+
+        this.after({
+            render: this._afterRender
+        });
     },
 
     /**
@@ -119,7 +129,7 @@ DatePickerDelegate.prototype = {
             selectedDates = null;
 
         if (activeInput) {
-            selectedDates = activeInput.getData('datepickerSelection')
+            selectedDates = activeInput.getData('datepickerSelection');
         }
 
         return selectedDates;
@@ -151,7 +161,13 @@ DatePickerDelegate.prototype = {
      *
      * @method useInputNode
      */
-    useInputNode: function() {},
+    useInputNode: function(node) {
+        var instance = this;
+
+
+            return instance.useInputNode(node);
+
+    },
 
     /**
      * Triggers `useInputNode` method once.
@@ -250,11 +266,9 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _handleTabKeyEvent: function() {
-        var popupChildren = A.one('.' + this._attrs.popoverCssClass.value).get('children'),
-            calendar = popupChildren._nodes[0].lastChild.firstChild;
-        if (calendar) {
-            calendar.focus();
-        }
+        var calendarNode = A.one('.' + CSS_CALENDAR);
+
+        calendarNode.focus();
     },
 
     /**
@@ -268,8 +282,13 @@ DatePickerDelegate.prototype = {
         var instance = this;
 
         instance.useInputNodeOnce(event.currentTarget);
-
         instance._userInteractionInProgress = true;
+
+
+        // Enables cyclical keyboard tabbing on calendar popup
+        var calendarNode = A.one('.' + CSS_CALENDAR);
+
+        calendarNode.focus();
     },
 
     /**
@@ -364,7 +383,7 @@ DatePickerDelegate.prototype = {
                 activeInput.val(values.join(dateSeparator));
             }
         };
-    }
+    },
 };
 
 /**
