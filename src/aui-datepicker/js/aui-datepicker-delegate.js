@@ -91,7 +91,10 @@ DatePickerDelegate.prototype = {
                 A.bind('_onceUserInteractionRelease', instance), trigger),
 
             container.delegate(
-                'key', A.bind('_handleTabKeyEvent', instance), 'tab', trigger)
+                'key', A.bind('_handleTabKeyEvent', instance), 'tab', trigger),
+
+            container.delegate(
+                'key', A.bind('_handleEscKeyEvent', instance), 'esc', trigger)
 
         ];
 
@@ -277,6 +280,17 @@ DatePickerDelegate.prototype = {
     },
 
     /**
+    * Handles esc key events
+    *
+    * @method _handleEscKeyEvent
+    * @protected
+    */
+    _handleEscKeyEvent: function() {
+        // var instance = this;
+        console.log('escape');
+        // instance._focusOnActiveCalendarNode();
+    },
+    /**
      * Fires once user interacts.
      *
      * @method _onceUserInteraction
@@ -285,7 +299,7 @@ DatePickerDelegate.prototype = {
      */
     _onceUserInteraction: function(event) {
         var instance = this;
-
+        console.log('helo')
         instance.useInputNodeOnce(event.currentTarget);
         instance._userInteractionInProgress = true;
 
