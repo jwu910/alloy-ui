@@ -15,6 +15,7 @@ var Lang = A.Lang,
     CSS_PREFIX = 'yui3',
     CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar');
 
+
 /**
  * Fired when then enter key is pressed on an input node.
  *
