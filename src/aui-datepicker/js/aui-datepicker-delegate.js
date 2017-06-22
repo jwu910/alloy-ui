@@ -253,15 +253,27 @@ DatePickerDelegate.prototype = {
     },
 
     /**
-    * Handles tab key events
+    * Focuses on active calendar.
+    *
+    * @method _handleTabKeyEvent
+    * @protected
+    */
+    _focusOnActiveCalendarNode: function() {
+        var calendarNode =  A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
+
+        calendarNode.focus();
+    },
+
+    /**
+    * Handles tab key events and focuses on calendar.
     *
     * @method _handleTabKeyEvent
     * @protected
     */
     _handleTabKeyEvent: function() {
-        var calendarNode = A.one('.' + CSS_CALENDAR);
+        var instance = this;
 
-        calendarNode.focus();
+        instance._focusOnActiveCalendarNode();
     },
 
     /**
@@ -277,11 +289,8 @@ DatePickerDelegate.prototype = {
         instance.useInputNodeOnce(event.currentTarget);
         instance._userInteractionInProgress = true;
 
-
-        // Enables cyclical keyboard tabbing on calendar popup
-        var calendarNode = A.one('.' + CSS_CALENDAR);
-
-        calendarNode.focus();
+        // Enables cyclical tab keyboard navigation
+        instance._focusOnActiveCalendarNode();
     },
 
     /**
