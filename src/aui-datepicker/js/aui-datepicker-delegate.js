@@ -8,12 +8,15 @@
 var Lang = A.Lang,
     isString = Lang.isString,
     EVENT_ENTER_KEY = 'enterKey',
+    EVENT_TAB_KEY = 'tabKey',
+    
     _DOCUMENT = A.one(A.config.doc),
 
     getCN = A.getClassName,
 
     CSS_PREFIX = 'yui3',
     CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar');
+
 
 
 /**
@@ -250,6 +253,9 @@ DatePickerDelegate.prototype = {
 
         if (event.isKey('enter')) {
             instance.fire(EVENT_ENTER_KEY);
+        } else if (event.isKey('tab')) {
+            instance.fire(EVENT_TAB_KEY);
+            console.log('event is = ' + event);
         }
     },
 
