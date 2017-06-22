@@ -13,9 +13,8 @@ var Lang = A.Lang,
     getCN = A.getClassName,
 
     CSS_PREFIX = 'yui3',
-    CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar'),
-    CSS_CALENDAR_FOCUSED = getCN(CSS_CALENDAR, 'focused')
-    ;
+    CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar');
+
 
 /**
  * Fired when then enter key is pressed on an input node.
@@ -261,10 +260,7 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _handleTabKeyEvent: function() {
-        //var calendarNode = A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
-        console.log('CSS_CALENDAR = ' + CSS_CALENDAR + ' CSS_CALENDAR_FOCUSED = ' + CSS_CALENDAR_FOCUSED);
         var calendarNode = A.one('.' + CSS_CALENDAR);
-        console.log(calendarNode);
 
         calendarNode.focus();
     },
@@ -280,8 +276,13 @@ DatePickerDelegate.prototype = {
         var instance = this;
 
         instance.useInputNodeOnce(event.currentTarget);
-
         instance._userInteractionInProgress = true;
+
+
+        // Enables cyclical keyboard tabbing on calendar popup
+        var calendarNode = A.one('.' + CSS_CALENDAR);
+
+        calendarNode.focus();
     },
 
     /**
