@@ -95,7 +95,10 @@ DatePickerDelegate.prototype = {
                 A.bind('_onceUserInteractionRelease', instance), trigger),
 
             container.delegate(
-                'key', A.bind('_handleTabKeyEvent', instance), 'tab', trigger)
+                'key', A.bind('_handleTabKeyEvent', instance), 'tab', trigger),
+
+            container.delegate(
+                'key', A.bind('_handleEscKeyEvent', instance), 'esc', trigger)
 
         ];
 
@@ -260,17 +263,40 @@ DatePickerDelegate.prototype = {
     },
 
     /**
-    * Handles tab key events
+    * Focuses on active calendar.
+    *
+    * @method _handleTabKeyEvent
+    * @protected
+    */
+    _focusOnActiveCalendarNode: function() {
+        var calendarNode =  A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
+
+        calendarNode.focus();
+    },
+
+    /**
+    * Handles tab key events and focuses on calendar.
     *
     * @method _handleTabKeyEvent
     * @protected
     */
     _handleTabKeyEvent: function() {
-        var calendarNode = A.one('.' + CSS_CALENDAR);
+        var instance = this;
 
-        calendarNode.focus();
+        instance._focusOnActiveCalendarNode();
     },
 
+    /**
+    * Handles esc key events
+    *
+    * @method _handleEscKeyEvent
+    * @protected
+    */
+    _handleEscKeyEvent: function() {
+        // var instance = this;
+        console.log('escape');
+        // instance._focusOnActiveCalendarNode();
+    },
     /**
      * Fires once user interacts.
      *
@@ -280,15 +306,12 @@ DatePickerDelegate.prototype = {
      */
     _onceUserInteraction: function(event) {
         var instance = this;
-
+        console.log('helo')
         instance.useInputNodeOnce(event.currentTarget);
         instance._userInteractionInProgress = true;
 
-
-        // Enables cyclical keyboard tabbing on calendar popup
-        var calendarNode = A.one('.' + CSS_CALENDAR);
-
-        calendarNode.focus();
+        // Enables cyclical tab keyboard navigation
+        instance._focusOnActiveCalendarNode();
     },
 
     /**
