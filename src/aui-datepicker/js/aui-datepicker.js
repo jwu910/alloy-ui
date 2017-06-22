@@ -211,9 +211,6 @@ A.mix(DatePickerBase.prototype, {
     useInputNode: function(node) {
         var instance = this,
             popover = instance.getPopover();
-            calendar = instance.getCalendar(),
-            selectionMode = calendar.get('selectionMode');
-
         popover.set('trigger', node);
         instance.set('activeInput', node);
 
@@ -234,9 +231,14 @@ A.mix(DatePickerBase.prototype, {
         instance.selectDatesFromInputValue(instance.getParsedDatesFromInputValue());
 
         // if current node is an input field, auto show and focus calendar
-        if ((instance.get('activeInput')._node.localName === 'input') && (selectionMode !== 'multiple')) {
-            popover.set('visible', true);
-            popover.focus();
+        calendar = instance.getCalendar(),
+        selectionMode = calendar.get('selectionMode');
+
+        if ((instance.get('activeInput')._node.nodeName === 'INPUT') && (selectionMode !== 'multiple')) {
+            instance.show();
+
+                //popover.set('visible', true);
+                //popover.focus();
         }
     },
 
