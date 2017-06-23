@@ -15,8 +15,10 @@ var Lang = A.Lang,
     getCN = A.getClassName,
 
     CSS_PREFIX = 'yui3',
-    CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar');
+    CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar'),
 
+    // Variable to store previous Node informaiton
+    prevNode = {};
 
 
 /**
@@ -106,8 +108,10 @@ DatePickerDelegate.prototype = {
                 'key', A.bind('_handleTabKeyEvent', instance), 'tab', trigger),
 
             container.delegate(
-                'key', A.bind('_handleEscKeyEvent', instance), 'esc', trigger)
+                'key', A.bind('_handleEscKeyEvent', instance), 'esc', trigger),
 
+            container.delegate(
+                'key', A.bind('_handleEnterKeyEvent', instance), 'enter', trigger)
         ];
 
         instance.after(
@@ -282,11 +286,12 @@ DatePickerDelegate.prototype = {
         console.log('***aui-datepicker-delegate: _handleKeydownEvent start');
         var instance = this;
 
+        prevNode = event._currentTarget;
+
         if (event.isKey('enter')) {
             instance.fire(EVENT_ENTER_KEY);
         } else if (event.isKey('tab')) {
             instance.fire(EVENT_TAB_KEY);
-            console.log('event is = ' + event);
         }
         console.log('***aui-datepicker-delegate: _handleKeydownEvent end');
     },
@@ -304,6 +309,18 @@ DatePickerDelegate.prototype = {
         calendarNode.setAttribute('aria-live','rude');
         calendarNode.focus();
         console.log('***aui-datepicker-delegate: _focusOnActiveCalendarNode end');
+    },
+
+    /**
+    * Focuses on active calendar.
+    *
+    * @method _handleTabKeyEvent
+    * @protected
+    */
+    _focusOnActiveCalendarNode: function() {
+        var calendarNode = A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
+
+        calendarNode.focus();
     },
 
     /**
@@ -328,11 +345,31 @@ DatePickerDelegate.prototype = {
     */
     _handleEscKeyEvent: function() {
         console.log('***aui-datepicker-delegate: _handleEscKeyEvent start');
-        // var instance = this;
-        console.log('escape');
+
+        var instance = this;
+
+        instance.useInputNodeOnce(prevNode); //should pass variable current or previous node through here to move focus back to that node
         // instance._focusOnActiveCalendarNode();
         console.log('***aui-datepicker-delegate: _handleEscKeyEvent end');
     },
+    /**
+    * Fires on enter
+    *
+    * @method _handleEnterKeyEvent
+    * @protected
+    */
+    _handleEnterKeyEvent: function() {
+        var instance = this;
+
+        // if current node is an input field, auto show and focus calendar
+        calendar = instance.getCalendar(),
+        selectionMode = calendar.get('selectionMode');
+        if ((instance.get('activeInput')._node.nodeName === 'INPUT') && (selectionMode !== 'multiple')) {
+            instance.show();
+            prevNode = event._currentTarget;
+        }
+    },
+
     /**
      * Fires once user interacts.
      *
