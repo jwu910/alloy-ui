@@ -9,7 +9,7 @@ var Lang = A.Lang,
     isString = Lang.isString,
     EVENT_ENTER_KEY = 'enterKey',
     EVENT_TAB_KEY = 'tabKey',
-    
+
     _DOCUMENT = A.one(A.config.doc),
 
     getCN = A.getClassName,
@@ -34,7 +34,10 @@ var Lang = A.Lang,
  * @constructor
  */
 
-function DatePickerDelegate() {}
+function DatePickerDelegate() {
+    console.log('***aui-datepicker-delegate: DatePickerDelegate() start');
+    console.log('***aui-datepicker-delegate: DatePickerDelegate() end');
+}
 
 DatePickerDelegate.prototype = {
     _eventHandles: null,
@@ -49,6 +52,7 @@ DatePickerDelegate.prototype = {
      * @protected
      */
     initializer: function() {
+        console.log('***aui-datepicker-delegate: initializer start');
         var instance = this;
 
         instance.bindDelegateUI();
@@ -56,6 +60,7 @@ DatePickerDelegate.prototype = {
         this.after({
             render: this._afterRender
         });
+        console.log('***aui-datepicker-delegate: initializer end');
     },
 
     /**
@@ -65,9 +70,11 @@ DatePickerDelegate.prototype = {
      * @protected
      */
     destroy: function() {
+        console.log('***aui-datepicker-delegate: destroy start');
         var instance = this;
 
         (new A.EventHandle(instance._eventHandles)).detach();
+        console.log('***aui-datepicker-delegate: destroy end');
     },
 
     /**
@@ -77,6 +84,7 @@ DatePickerDelegate.prototype = {
      * @protected
      */
     bindDelegateUI: function() {
+        console.log('***aui-datepicker-delegate: bindDelegateUI start');
         var instance = this,
             container = instance.get('container'),
             trigger = instance.get('trigger');
@@ -110,6 +118,7 @@ DatePickerDelegate.prototype = {
             'selectionChange', {
                 defaultFn: instance._defSelectionChangeFn
             });
+        console.log('***aui-datepicker-delegate: bindDelegateUI end');
     },
 
     /**
@@ -117,7 +126,10 @@ DatePickerDelegate.prototype = {
      *
      * @method focusSelectedValue
      */
-    focusSelectedValue: function() {},
+    focusSelectedValue: function() {
+        console.log('***aui-datepicker-delegate: focusSelectedValue start');
+        console.log('***aui-datepicker-delegate: focusSelectedValue end');
+    },
 
     /**
      * Gets the selected dates.
@@ -127,6 +139,7 @@ DatePickerDelegate.prototype = {
      * @return {Object | null}
      */
     getSelectedDates: function(node) {
+        console.log('***aui-datepicker-delegate: getSelectedDates start');
         var instance = this,
             activeInput = node || instance.get('activeInput'),
             selectedDates = null;
@@ -135,6 +148,7 @@ DatePickerDelegate.prototype = {
             selectedDates = activeInput.getData('datepickerSelection');
         }
 
+        console.log('***aui-datepicker-delegate: getSelectedDates end');
         return selectedDates;
     },
 
@@ -146,17 +160,21 @@ DatePickerDelegate.prototype = {
      * @return {Object | null}
      */
     getParsedDatesFromInputValue: function(opt_value) {
+        console.log('***aui-datepicker-delegate: getParsedDateFromInputValue start');
+        console.log('opt_value == ',opt_value);
         var instance = this,
             valueExtractor = instance.get('valueExtractor'),
             parsedDates = valueExtractor.call(instance, opt_value);
 
         if (parsedDates) {
+            console.log('it returned',A.Array.filter(parsedDates, function(parsed) { return parsed !== false;}));
             return A.Array.filter(parsedDates, function(parsed) {
                 return parsed !== false;
             });
         }
 
-        return null;
+       console.log('***aui-datepicker-delegate: getParsedDateFromInputValue end');
+       return null;
     },
 
     /**
@@ -165,9 +183,10 @@ DatePickerDelegate.prototype = {
      * @method useInputNode
      */
     useInputNode: function(node) {
+        console.log('***aui-datepicker-delegate: useInputNode start');
         var instance = this;
 
-
+        console.log('***aui-datepicker-delegate: useInputNode end');
             return instance.useInputNode(node);
 
     },
@@ -179,11 +198,13 @@ DatePickerDelegate.prototype = {
      * @param node
      */
     useInputNodeOnce: function(node) {
+        console.log('***aui-datepicker-delegate: useInputNodeOnce start');
         var instance = this;
 
         if (!instance._userInteractionInProgress) {
             instance.useInputNode(node);
         }
+        console.log('***aui-datepicker-delegate: useInputNodeOnce end');
     },
 
     /**
@@ -195,6 +216,7 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _afterActiveInputChange: function(event) {
+        console.log('***aui-datepicker-delegate: _afterActiveInputChange start');
         var instance = this;
 
         if (event.prevVal) {
@@ -205,6 +227,7 @@ DatePickerDelegate.prototype = {
         if (event.newVal) {
             event.newVal.on('keydown', instance._handleKeydownEvent, instance);
         }
+        console.log('***aui-datepicker-delegate: _afterActiveInputChange end');
     },
 
     /**
@@ -215,6 +238,7 @@ DatePickerDelegate.prototype = {
      * @protected
      */
     _defSelectionChangeFn: function(event) {
+        console.log('***aui-datepicker-delegate: _defSelectionChangeFn');
         var instance = this,
             selection = event.newSelection,
             activeInput = instance.get('activeInput'),
@@ -225,6 +249,7 @@ DatePickerDelegate.prototype = {
         if (activeInput) {
             activeInput.setData('datepickerSelection', selection);
         }
+        console.log('***aui-datepicker-delegate: _defSelectionChangeFn end');
     },
 
     /**
@@ -236,9 +261,11 @@ DatePickerDelegate.prototype = {
      * @return {Date}
      */
     _formatDate: function(date) {
+        console.log('***aui-datepicker-delegate: _formatDate start');
         var instance = this,
             mask = instance.get('mask');
 
+        console.log('***aui-datepicker-delegate: _formatDate end');
         return A.Date.format(date, {
             format: mask
         });
@@ -252,6 +279,7 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _handleKeydownEvent: function(event) {
+        console.log('***aui-datepicker-delegate: _handleKeydownEvent start');
         var instance = this;
 
         if (event.isKey('enter')) {
@@ -260,6 +288,7 @@ DatePickerDelegate.prototype = {
             instance.fire(EVENT_TAB_KEY);
             console.log('event is = ' + event);
         }
+        console.log('***aui-datepicker-delegate: _handleKeydownEvent end');
     },
 
     /**
@@ -269,9 +298,12 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _focusOnActiveCalendarNode: function() {
+        console.log('***aui-datepicker-delegate: _focusOnActiveCalendarNode start');
         var calendarNode =  A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
 
+        calendarNode.setAttribute('aria-live','rude');
         calendarNode.focus();
+        console.log('***aui-datepicker-delegate: _focusOnActiveCalendarNode end');
     },
 
     /**
@@ -281,9 +313,11 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _handleTabKeyEvent: function() {
+        console.log('***aui-datepicker-delegate: _handleTabKeyEvent start');
         var instance = this;
 
         instance._focusOnActiveCalendarNode();
+        console.log('***aui-datepicker-delegate: _handleTabKeyEvent end');
     },
 
     /**
@@ -293,9 +327,11 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _handleEscKeyEvent: function() {
+        console.log('***aui-datepicker-delegate: _handleEscKeyEvent start');
         // var instance = this;
         console.log('escape');
         // instance._focusOnActiveCalendarNode();
+        console.log('***aui-datepicker-delegate: _handleEscKeyEvent end');
     },
     /**
      * Fires once user interacts.
@@ -305,6 +341,7 @@ DatePickerDelegate.prototype = {
      * @protected
      */
     _onceUserInteraction: function(event) {
+        console.log('***aui-datepicker-delegate: _onceUserInteraction start');
         var instance = this;
         console.log('helo')
         instance.useInputNodeOnce(event.currentTarget);
@@ -312,6 +349,7 @@ DatePickerDelegate.prototype = {
 
         // Enables cyclical tab keyboard navigation
         instance._focusOnActiveCalendarNode();
+        console.log('***aui-datepicker-delegate: _onceUserInteraction end');
     },
 
     /**
@@ -322,6 +360,7 @@ DatePickerDelegate.prototype = {
      * @protected
      */
     _onceUserInteractionRelease: function(event) {
+        console.log('***aui-datepicker-delegate: _onceUserInteractionRelease start');
         var instance = this;
 
         instance.useInputNodeOnce(event.currentTarget);
@@ -329,6 +368,7 @@ DatePickerDelegate.prototype = {
         instance.focusSelectedValue();
 
         instance._userInteractionInProgress = false;
+        console.log('***aui-datepicker-delegate: _onceUserINteractionRelease end');
     },
 
     /**
@@ -339,11 +379,13 @@ DatePickerDelegate.prototype = {
      * @protected
      */
     _onUserInteractionRelease: function(event) {
+        console.log('_onUserInteractionRelease start');
         var instance = this;
 
         instance.useInputNode(event.currentTarget);
 
         instance._userInteractionInProgress = false;
+        console.log('_onUserInteractionRelease end');
     },
 
     /**
@@ -354,6 +396,7 @@ DatePickerDelegate.prototype = {
      */
     _valueExtractorFn: function() {
         return function(opt_value) {
+            console.log('***aui-datepicker-delegate: _valueExtractorFn returned function start');
             var instance = this,
                 activeInput = instance.get('activeInput'),
                 activeInputVal,
@@ -380,6 +423,7 @@ DatePickerDelegate.prototype = {
                     });
             }
 
+            console.log('***aui-datepicker-delegate: _valueExtractorFn returned function end');
             return dates;
         };
     },
@@ -393,6 +437,7 @@ DatePickerDelegate.prototype = {
      */
     _valueFormatterFn: function() {
         return function(dates) {
+            console.log('***aui-datepicker-delegate: _valueFormatterFn returned function start');
             var instance = this,
                 activeInput = instance.get('activeInput'),
                 dateSeparator = instance.get('dateSeparator'),
@@ -405,6 +450,7 @@ DatePickerDelegate.prototype = {
             if (activeInput) {
                 activeInput.val(values.join(dateSeparator));
             }
+            console.log('***aui-datepicker-delegate: _valueFormatterFn returned function end');
         };
     },
 };

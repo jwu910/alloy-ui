@@ -18,7 +18,10 @@ var Lang = A.Lang,
  * @constructor
  */
 
-function DatePickerPopover() {}
+function DatePickerPopover() {
+    console.log('***aui-datepicker-popover: DatePickerPopover() start');
+    console.log('***aui-datepicker-popover: DatePickerPopover() end');
+}
 
 /**
  * Static property used to define the default attribute configuration for the
@@ -78,10 +81,12 @@ A.mix(DatePickerPopover.prototype, {
      * @param node
      */
     alignTo: function(node) {
+        console.log('***aui-datepicker-popover: alignTo start');
         var instance = this,
             popover = instance.getPopover();
 
         popover.set('align.node', node);
+        console.log('***aui-datepicker-popover: alignTo end');
     },
 
     /**
@@ -92,6 +97,7 @@ A.mix(DatePickerPopover.prototype, {
      * @return {Popover}
      */
     getPopover: function() {
+        console.log('***aui-datepicker-popover: getPopover start');
         var instance = this,
             popover = instance.popover;
 
@@ -102,7 +108,7 @@ A.mix(DatePickerPopover.prototype, {
 
             instance.popover = popover;
         }
-
+        console.log('***aui-datepicker-popover: getPopover end');
         return popover;
     },
 
@@ -112,9 +118,11 @@ A.mix(DatePickerPopover.prototype, {
      * @method hide
      */
     hide: function() {
+        console.log('***aui-datepicker-popover: hide start');
         var instance = this;
 
         instance.getPopover().hide();
+        console.log('***aui-datepicker-popover: hide end');
     },
 
     /**
@@ -123,9 +131,11 @@ A.mix(DatePickerPopover.prototype, {
      * @method show
      */
     show: function() {
+        console.log('***aui-datepicker-popover: show start');
         var instance = this;
 
         instance.getPopover().show();
+        console.log('***aui-datepicker-popover: show end');
     },
 
     /**
@@ -136,9 +146,11 @@ A.mix(DatePickerPopover.prototype, {
      * @return {Boolean}
      */
     _isActiveInputFocused: function() {
+        console.log('***aui-datepicker-popover: _isActiveInputFocused start');
         var instance = this,
             activeInput = instance.get('activeInput');
 
+        console.log('***aui-datepicker-popover: _isActiveInputFocused end');
         return (activeInput === _DOCUMENT.get('activeElement'));
     },
 
@@ -150,6 +162,7 @@ A.mix(DatePickerPopover.prototype, {
      * @protected
      */
     _onPopoverClickOutside: function(event) {
+        console.log('***aui-datepicker-popover: _onPopoverClickOutside start');
         var instance = this,
             target = event.target,
             activeInput = instance.get('activeInput');
@@ -158,6 +171,7 @@ A.mix(DatePickerPopover.prototype, {
 
             instance.hide();
         }
+        console.log('***aui-datepicker-popover: _onPopoverClickOutside end');
     },
 
     /**
@@ -168,8 +182,10 @@ A.mix(DatePickerPopover.prototype, {
      * @protected
      */
     _setPopover: function(val) {
+        console.log('***aui-datepicker-popover: _setPopover start');
         var instance = this;
 
+        console.log('***aui-datepicker-popover: _setPopover end');
         return A.merge({
             bodyContent: '',
             cssClass: instance.get('popoverCssClass'),
