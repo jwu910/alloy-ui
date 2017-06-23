@@ -4,10 +4,11 @@
  * @module aui-datepicker
  */
 
-var Lang = A.Lang,
-    clamp = function(value, min, max) {
+var Lang = A.Lang;
+var clamp = function(value, min, max) {
         return Math.min(Math.max(value, min), max);
     }
+var ARIA_LIVE_LEVEL = 'assertive';
 
 /**
  * A base class for `DatePickerBase`.
@@ -276,7 +277,7 @@ A.mix(DatePickerBase.prototype, {
         if (newDates.length !== prevDates.length || newSelection.length < prevDates.length) {
             var containingNode = A.one('#' + instance.getCalendar().calendarId);
             instance.get('activeInput').setAttribute('aria-label', instance.get('accessibility'));
-            instance.get('activeInput').setAttribute('aria-live', 'rude');
+            instance.get('activeInput').setAttribute('aria-live', ARIA_LIVE_LEVEL);
 
             instance.fire('selectionChange', {
                 newSelection: newSelection

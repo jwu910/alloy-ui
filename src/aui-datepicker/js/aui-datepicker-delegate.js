@@ -280,20 +280,8 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _focusOnActiveCalendarNode: function() {
-        var calendarNode =  A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
-
-        calendarNode.setAttribute('aria-live','rude');
-        calendarNode.focus();
-    },
-
-    /**
-    * Focuses on active calendar.
-    *
-    * @method _handleTabKeyEvent
-    * @protected
-    */
-    _focusOnActiveCalendarNode: function() {
-        var calendarNode = A.one('#' + this.getCalendar()._calendarId)._node.parentNode.parentNode;
+        var instance = this;
+        var calendarNode = A.one('#' + instance.getCalendar()._calendarId)._node.parentNode.parentNode;
 
         calendarNode.focus();
     },
