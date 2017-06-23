@@ -219,7 +219,8 @@ A.mix(DatePickerBase.prototype, {
         instance.clearSelection(true);
         instance.selectDatesFromInputValue(instance.getParsedDatesFromInputValue());
 
-        // Refocus on previous node
+        // Refocus on previous node by updating newVal property to match current node.
+        instance.set('_ATTR_E_FACADE.newVal._node', node);
         instance._ATTR_E_FACADE.newVal._node.focus();
     },
 
