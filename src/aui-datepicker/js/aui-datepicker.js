@@ -18,10 +18,7 @@ var Lang = A.Lang,
  * @constructor
  */
 
-function DatePickerBase() {
-    console.log('***aui-datepicker: DatePickerBase() start');
-    console.log('***aui-datepicker: DatePickerBase() end');
-}
+function DatePickerBase() {}
 
 /**
  *
@@ -99,11 +96,9 @@ A.mix(DatePickerBase.prototype, {
      * @protected
      */
     initializer: function() {
-        console.log('***aui-datepicker: initializer start');
         var instance = this;
 
         instance.after('selectionChange', instance._afterDatePickerSelectionChange);
-        console.log('***aui-datepicker: initializer end');
     },
 
     /**
@@ -113,14 +108,10 @@ A.mix(DatePickerBase.prototype, {
      * @param silent
      */
     clearSelection: function(silent) {
-        console.log('***aui-datepicker: clearSelection start');
         var instance = this;
 
         instance.getCalendar()._clearSelection(silent);
-
         instance.set('accessibility', '');
-
-        console.log('***aui-datepicker: clearSelection end');
     },
 
     /**
@@ -130,11 +121,9 @@ A.mix(DatePickerBase.prototype, {
      * @param dates
      */
     deselectDates: function(dates) {
-        console.log('***aui-datepicker: deselectDates start');
         var instance = this;
 
         instance.getCalendar().deselectDates(dates);
-        console.log('***aui-datepicker: deselectDates end');
     },
 
     /**
@@ -145,7 +134,6 @@ A.mix(DatePickerBase.prototype, {
      * @return {Calendar}
      */
     getCalendar: function() {
-        console.log('***aui-datepicker: getCalendar start');
         var instance = this,
             calendar = instance.calendar,
             originalCalendarTemplate;
@@ -163,7 +151,6 @@ A.mix(DatePickerBase.prototype, {
             instance.getPopover();
 
             calendar = new A.Calendar(instance.get('calendar'));
-            console.log('   calendar._highlightedDateNode = ',calendar._highlightedDateNode);
             calendar.render(instance.popover.bodyNode);
             instance.calendar = calendar;
 
@@ -174,13 +161,11 @@ A.mix(DatePickerBase.prototype, {
                 'dateClick', instance._afterCalendarDateClick,
                 instance);
 
-            console.log("inside get calendar! fired below calender.afters");
 
             // Restore the original CalendarBase template.
             A.CalendarBase.CONTENT_TEMPLATE = originalCalendarTemplate;
         }
 
-        console.log('***aui-datepicker: getCalendar end');
         return calendar;
     },
 
@@ -191,11 +176,9 @@ A.mix(DatePickerBase.prototype, {
      * @param dates
      */
     selectDates: function(dates) {
-        console.log('***aui-datepicker: selectDates start');
         var instance = this;
 
         instance.getCalendar().selectDates(dates);
-        console.log('***aui-datepicker: selectDates end');
     },
 
     /**
@@ -206,7 +189,6 @@ A.mix(DatePickerBase.prototype, {
      * @param dates
      */
     selectDatesFromInputValue: function(dates) {
-        console.log('***aui-datepicker: selectDatesFromInputValue start');
         var instance = this,
             calendar = instance.getCalendar();
 
@@ -220,10 +202,8 @@ A.mix(DatePickerBase.prototype, {
         var dateList = dates ? dates.toString() : '';
 
         instance.set('accessibility', dateList);
-        console.log('accessibility = ',instance.get('accessibility'));
 
         calendar._fireSelectionChange();
-        console.log('***aui-datepicker: selectDatesFromInputValue end');
     },
 
     /**
@@ -233,7 +213,6 @@ A.mix(DatePickerBase.prototype, {
      * @param node
      */
     useInputNode: function(node) {
-        console.log('***aui-datepicker: useInputNode start');
         var instance = this,
             popover = instance.getPopover();
         popover.set('trigger', node);
@@ -246,10 +225,10 @@ A.mix(DatePickerBase.prototype, {
         instance.clearSelection(true);
         instance.selectDatesFromInputValue(instance.getParsedDatesFromInputValue());
 
-        // Refocus on previous node
+        // Refocus on previous node by updating newVal property to match current node.
+        instance.set('_ATTR_E_FACADE.newVal._node', node);
         instance._ATTR_E_FACADE.newVal._node.focus();
 
-        console.log('***aui-datepicker: useInputNode end');
     },
 
     /**
@@ -259,12 +238,10 @@ A.mix(DatePickerBase.prototype, {
     * @protected
     */
     _afterCalendarDateClick: function(event) {
-        console.log('***aui-datepicker: _afterCalendarDateClick start');
         var instance = this,
             calendar = instance.getCalendar(),
             selectionMode = calendar.get('selectionMode');
 
-        console.log(calendar);
 
         if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
             instance.hide();
@@ -272,7 +249,6 @@ A.mix(DatePickerBase.prototype, {
             // Refocus on previous node
             instance._ATTR_E_FACADE.newVal._node.focus();
         }
-        console.log('***aui-datepicker: _afterCalendarDateClick end');
     },
 
     /**
@@ -283,7 +259,6 @@ A.mix(DatePickerBase.prototype, {
     * @protected
     */
     _afterCalendarSelectionChange: function(event) {
-        console.log('***aui-datepicker: _afterCalendarSelectionChange start');
         var instance = this,
             newDates,
             newSelection = event.newSelection,
@@ -292,19 +267,14 @@ A.mix(DatePickerBase.prototype, {
         newDates = newSelection.concat(prevDates);
 
         newDates = A.Array.dedupe(newDates);
-        console.log('dates are: ',newDates);
 
         //Create the string here.
         var dateList = newDates ? newDates.toString() : '';
 
         instance.set('accessibility', dateList);
-        console.log('accessibility changed to = ',instance.get('accessibility'));
 
         if (newDates.length !== prevDates.length || newSelection.length < prevDates.length) {
             var containingNode = A.one('#' + instance.getCalendar().calendarId);
-            console.log('accessibility containingNode =',containingNode);
-            console.log('accessibility',instance);
-            console.log('accessibility activeInput', instance.get('activeInput'));
             instance.get('activeInput').setAttribute('aria-label', instance.get('accessibility'));
             instance.get('activeInput').setAttribute('aria-live', 'rude');
 
@@ -312,7 +282,6 @@ A.mix(DatePickerBase.prototype, {
                 newSelection: newSelection
             });
         }
-        console.log('***aui-datepicker: _afterCalendarSelectionChange end');
     },
 
     /**
@@ -322,14 +291,12 @@ A.mix(DatePickerBase.prototype, {
     * @protected
     */
     _afterDatePickerSelectionChange: function() {
-        console.log('***aui-datepicker: _afterDatePickerSelectionChange start');
         var instance = this;
         instance._setCalendarToFirstSelectedDate();
 
         // Closes calendar when enter key is pressed on date
         instance.hide();
         instance._ATTR_E_FACADE.newVal._node.focus();
-        console.log('***aui-datepicker: _afterDatePickerSelectionChange end');
     },
 
     /**
@@ -342,8 +309,6 @@ A.mix(DatePickerBase.prototype, {
     * @protected
     */
     _isSameDay: function(date1, date2) {
-        console.log('***aui-datepicker: _isSameDay start');
-        console.log('***aui-datepicker: _isSameDay end');
         return date1.getDate() === date2.getDate() &&
             date1.getMonth() === date2.getMonth() &&
             date1.getFullYear() === date2.getFullYear();
@@ -357,7 +322,6 @@ A.mix(DatePickerBase.prototype, {
      * @protected
      */
     _onceUserInteractionRelease: function(event) {
-        console.log('***aui-datepicker: _onceUserInteractionRelease start');
         var instance = this;
 
         instance.useInputNodeOnce(event.currentTarget);
@@ -365,7 +329,6 @@ A.mix(DatePickerBase.prototype, {
         instance.alignTo(event.currentTarget);
 
         instance._userInteractionInProgress = false;
-        console.log('***aui-datepicker: _onceUserInteractionRelease end');
     },
 
     /**
@@ -375,7 +338,6 @@ A.mix(DatePickerBase.prototype, {
      * @protected
      */
     _setCalendarToFirstSelectedDate: function() {
-        console.log('***aui-datepicker: _setCalendarToFirstSelectedDate start');
         var instance = this,
             dates = instance.getSelectedDates(),
             firstSelectedDate;
@@ -387,7 +349,6 @@ A.mix(DatePickerBase.prototype, {
         if (firstSelectedDate) {
             instance.getCalendar().set('date', firstSelectedDate);
         }
-        console.log('***aui-datepicker: _setCalendarToFirstSelectedDate end');
     },
 
     /**
@@ -398,8 +359,6 @@ A.mix(DatePickerBase.prototype, {
      * @protected
      */
     _setCalendar: function(val) {
-        console.log('***aui-datepicker: _setCalendar start');
-        console.log('***aui-datepicker: _setCalendar end');
         return A.merge({
             showNextMonth: true,
             showPrevMonth: true
@@ -415,8 +374,6 @@ A.mix(DatePickerBase.prototype, {
      * @return {Number} Clamped number of panes.
      */
     _setPanes: function(val) {
-        console.log('***aui-datepicker: _setPanes start');
-        console.log('***aui-datepicker: _setPanes end');
         return clamp(val, 1, 3);
     },
 
