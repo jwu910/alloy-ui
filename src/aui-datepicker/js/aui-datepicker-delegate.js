@@ -5,20 +5,20 @@
  * @submodule aui-datepicker-delegate
  */
 
-var Lang = A.Lang,
-    isString = Lang.isString,
-    EVENT_ENTER_KEY = 'enterKey',
-    EVENT_TAB_KEY = 'tabKey',
+var Lang = A.Lang;
+var isString = Lang.isString;
+var EVENT_ENTER_KEY = 'enterKey';
+var EVENT_TAB_KEY = 'tabKey';
 
-    _DOCUMENT = A.one(A.config.doc),
+var _DOCUMENT = A.one(A.config.doc);
 
-    getCN = A.getClassName,
+var getCN = A.getClassName;
 
-    CSS_PREFIX = 'yui3',
-    CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar'),
+var CSS_PREFIX = 'yui3';
+var CSS_CALENDAR = getCN(CSS_PREFIX, 'calendar');
 
     // Variable to store previous Node informaiton
-    prevNode = {};
+var prevNode = {};
 
 
 
@@ -116,6 +116,13 @@ DatePickerDelegate.prototype = {
             'selectionChange', {
                 defaultFn: instance._defSelectionChangeFn
             });
+
+        // Not tested.
+        _DOCUMENT._eventHandles = [
+            container.delegate(
+                'key', A.bind('_handleEscKeyEvent', instance), 'esc', trigger)
+        ];
+
     },
 
     /**
@@ -266,10 +273,6 @@ DatePickerDelegate.prototype = {
             instance.fire(EVENT_ENTER_KEY);
         } else if (event.isKey('tab')) {
             instance.fire(EVENT_TAB_KEY);
-            console.log('instance and prevNode');
-            console.log(event);
-            console.log(event.prevVal);
-            console.log(prevNode);
         }
     },
 
@@ -286,13 +289,27 @@ DatePickerDelegate.prototype = {
     },
 
     /**
+    * Focus on prior Node
+    *
+    * @method _focusOnLastNode
+    * @protected
+    */
+    _focusOnLastNode: function() {
+        var instance = this;
+
+        instance._ATTR_E_FACADE.prevVal.set('_node', instance.newVal);
+    },
+
+    /**
     * Handles tab key events and focuses on calendar.
     *
     * @method _handleTabKeyEvent
     * @protected
     */
-    _handleTabKeyEvent: function() {
+    _handleTabKeyEvent: function(event) {
         var instance = this;
+
+        prevNode = event.currentTarget;
 
         instance._focusOnActiveCalendarNode();
     },
@@ -303,24 +320,31 @@ DatePickerDelegate.prototype = {
     * @method _handleEscKeyEvent
     * @protected
     */
-    _handleEscKeyEvent: function() {
-        var instance = this;
+    _handleEscKeyEvent: function(event) {
 
-        instance.useInputNodeOnce(prevNode); //should pass variable current or previous node through here to move focus back to that node
-        // instance._focusOnActiveCalendarNode();
+        // Currently only firing while focused on node.
+        var instance = this,
+            calendar = instance.getCalendar();
+
+        if (calendar.get('display') !== "hidden") {
+            instance._focusOnLastNode();
+            instance._ATTR_E_FACADE.newVal._node.focus();
+        }
     },
+
     /**
     * Fires on enter
     *
     * @method _handleEnterKeyEvent
     * @protected
     */
-    _handleEnterKeyEvent: function() {
+    _handleEnterKeyEvent: function(event) {
         var instance = this;
 
         // if current node is an input field, auto show and focus calendar
         calendar = instance.getCalendar(),
         selectionMode = calendar.get('selectionMode');
+
         if ((instance.get('activeInput')._node.nodeName === 'INPUT') && (selectionMode !== 'multiple')) {
             instance.show();
             prevNode = event._currentTarget;
@@ -336,6 +360,7 @@ DatePickerDelegate.prototype = {
      */
     _onceUserInteraction: function(event) {
         var instance = this;
+
         instance.useInputNodeOnce(event.currentTarget);
         instance._userInteractionInProgress = true;
 
