@@ -236,22 +236,9 @@ A.mix(DatePickerBase.prototype, {
         console.log('***aui-datepicker: useInputNode start');
         var instance = this,
             popover = instance.getPopover();
-            calendar = instance.getCalendar(),
-            selectionMode = calendar.get('selectionMode');
-
         popover.set('trigger', node);
         instance.set('activeInput', node);
 
-        //=================================DEBUG===================================/
-/*
-        console.log('instance keys ============================');
-        for (var keys in instance) {
-            console.log('key = ' + keys);
-        };
-        console.log(instance.getAttrs());
-        console.log(instance.get('activeInput')._node.localName);
-*/
-        //=========================================================================/
         if (!popover.get('visible')) {
             instance.alignTo(node);
         }
@@ -259,11 +246,9 @@ A.mix(DatePickerBase.prototype, {
         instance.clearSelection(true);
         instance.selectDatesFromInputValue(instance.getParsedDatesFromInputValue());
 
-        // if current node is an input field, auto show and focus calendar
-        if ((instance.get('activeInput')._node.localName === 'input') && (selectionMode !== 'multiple')) {
-            popover.set('visible', true);
-            popover.focus();
-        }
+        // Refocus on previous node
+        instance._ATTR_E_FACADE.newVal._node.focus();
+
         console.log('***aui-datepicker: useInputNode end');
     },
 
@@ -283,6 +268,9 @@ A.mix(DatePickerBase.prototype, {
 
         if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
             instance.hide();
+
+            // Refocus on previous node
+            instance._ATTR_E_FACADE.newVal._node.focus();
         }
         console.log('***aui-datepicker: _afterCalendarDateClick end');
     },
@@ -340,6 +328,7 @@ A.mix(DatePickerBase.prototype, {
 
         // Closes calendar when enter key is pressed on date
         instance.hide();
+        instance._ATTR_E_FACADE.newVal._node.focus();
         console.log('***aui-datepicker: _afterDatePickerSelectionChange end');
     },
 
