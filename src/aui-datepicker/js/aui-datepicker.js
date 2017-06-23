@@ -160,8 +160,6 @@ A.mix(DatePickerBase.prototype, {
                 'dateClick', instance._afterCalendarDateClick,
                 instance);
 
-            console.log("inside get calendar! fired below calender.afters");
-
             // Restore the original CalendarBase template.
             A.CalendarBase.CONTENT_TEMPLATE = originalCalendarTemplate;
         }
@@ -214,15 +212,6 @@ A.mix(DatePickerBase.prototype, {
         popover.set('trigger', node);
         instance.set('activeInput', node);
 
-        //=================================DEBUG===================================/
-        console.log('instance keys ============================');
-        for (var keys in instance) {
-            console.log('key = ' + keys);
-        };
-        console.log(instance.getAttrs());
-        console.log(instance.get('activeInput')._node.localName);
-
-        //=========================================================================/
         if (!popover.get('visible')) {
             instance.alignTo(node);
         }
@@ -230,16 +219,8 @@ A.mix(DatePickerBase.prototype, {
         instance.clearSelection(true);
         instance.selectDatesFromInputValue(instance.getParsedDatesFromInputValue());
 
-        // if current node is an input field, auto show and focus calendar
-        calendar = instance.getCalendar(),
-        selectionMode = calendar.get('selectionMode');
-
-        if ((instance.get('activeInput')._node.nodeName === 'INPUT') && (selectionMode !== 'multiple')) {
-            instance.show();
-
-                //popover.set('visible', true);
-                //popover.focus();
-        }
+        // Refocus on previous node
+        instance._ATTR_E_FACADE.newVal._node.focus();
     },
 
     /**
@@ -253,10 +234,11 @@ A.mix(DatePickerBase.prototype, {
             calendar = instance.getCalendar(),
             selectionMode = calendar.get('selectionMode');
 
-        console.log(calendar);
-
         if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
             instance.hide();
+
+            // Refocus on previous node
+            instance._ATTR_E_FACADE.newVal._node.focus();
         }
     },
 
@@ -294,6 +276,10 @@ A.mix(DatePickerBase.prototype, {
         var instance = this;
 
         instance._setCalendarToFirstSelectedDate();
+
+        // Closes calendar when enter key is pressed on date
+        instance.hide();
+        instance._ATTR_E_FACADE.newVal._node.focus();
     },
 
     /**
