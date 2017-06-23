@@ -24,7 +24,6 @@ function DatePickerBase() {
 }
 
 /**
- * Lists `CalendarBase` pane templates.
  *
  * @property PANES
  * @type {Array}
@@ -219,6 +218,7 @@ A.mix(DatePickerBase.prototype, {
         );
 
         var dateList = dates ? dates.toString() : '';
+
         instance.set('accessibility', dateList);
         console.log('accessibility = ',instance.get('accessibility'));
 
