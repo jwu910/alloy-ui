@@ -229,7 +229,6 @@ A.mix(DatePickerBase.prototype, {
         // Refocus on previous node by updating newVal property to match current node.
         instance.set('_ATTR_E_FACADE.newVal._node', node);
         instance._ATTR_E_FACADE.newVal._node.focus();
-
     },
 
     /**

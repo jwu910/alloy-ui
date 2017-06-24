@@ -103,6 +103,9 @@ DatePickerDelegate.prototype = {
                 'key', A.bind('_handleEscKeyEvent', instance), 'esc', trigger),
 
             container.delegate(
+                'key', A.bind('_handleEnterKeyEvent', instance), 'enter', trigger),
+
+            container.delegate(
                 'key', A.bind('_handleEnterKeyEvent', instance), 'enter', trigger)
         ];
 
@@ -357,6 +360,7 @@ DatePickerDelegate.prototype = {
      */
     _onceUserInteraction: function(event) {
         var instance = this;
+
         instance.useInputNodeOnce(event.currentTarget);
         instance._userInteractionInProgress = true;
 

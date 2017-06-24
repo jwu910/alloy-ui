@@ -170,6 +170,7 @@ A.mix(DatePickerPopover.prototype, {
                 calendarWasFocused = false;
             }
         }
+
     },
 
     /**
