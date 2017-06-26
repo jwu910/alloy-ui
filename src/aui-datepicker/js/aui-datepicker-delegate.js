@@ -35,7 +35,8 @@ var prevNode = {};
  * @constructor
  */
 
-function DatePickerDelegate() {}
+function DatePickerDelegate() {
+}
 
 DatePickerDelegate.prototype = {
     _eventHandles: null,
@@ -104,6 +105,8 @@ DatePickerDelegate.prototype = {
             container.delegate(
                 'key', A.bind('_handleEnterKeyEvent', instance), 'enter', trigger)
 
+            container.delegate(
+                'key', A.bind('_handleEnterKeyEvent', instance), 'enter', trigger)
         ];
 
         instance.after(
@@ -127,7 +130,8 @@ DatePickerDelegate.prototype = {
      *
      * @method focusSelectedValue
      */
-    focusSelectedValue: function() {},
+    focusSelectedValue: function() {
+    },
 
     /**
      * Gets the selected dates.
@@ -316,7 +320,6 @@ DatePickerDelegate.prototype = {
     * @protected
     */
     _handleEscKeyEvent: function(event) {
-
         // Currently only firing while focused on node.
         var instance = this,
             calendar = instance.getCalendar();

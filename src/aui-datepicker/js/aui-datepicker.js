@@ -21,7 +21,6 @@ var clamp = function(value, min, max) {
 function DatePickerBase() {}
 
 /**
- * Lists `CalendarBase` pane templates.
  *
  * @property PANES
  * @type {Array}
@@ -84,7 +83,6 @@ DatePickerBase.ATTRS = {
     },
 
     accessibility: ''//NEEDED FOR ACCESSIBILITY
-
 };
 
 A.mix(DatePickerBase.prototype, {
@@ -164,6 +162,7 @@ A.mix(DatePickerBase.prototype, {
                 'dateClick', instance._afterCalendarDateClick,
                 instance);
 
+
             // Restore the original CalendarBase template.
             A.CalendarBase.CONTENT_TEMPLATE = originalCalendarTemplate;
         }
@@ -205,7 +204,7 @@ A.mix(DatePickerBase.prototype, {
         instance._attrs.accessibility = dateList;//NEEDED FOR ACCESSIBILITY
 
         calendar._fireSelectionChange();
-    },
+z    },
 
     /**
      * Renders the widget in an `<input>` node.
@@ -241,6 +240,7 @@ A.mix(DatePickerBase.prototype, {
         var instance = this,
             calendar = instance.getCalendar(),
             selectionMode = calendar.get('selectionMode');
+
 
         if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
             instance.hide();
