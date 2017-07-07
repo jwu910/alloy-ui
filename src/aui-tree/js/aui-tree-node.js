@@ -49,7 +49,7 @@ var Lang = A.Lang,
     NODE_CONTAINER_TPL = '<ul></ul>',
 
     NODE_BOUNDING_TEMPLATE = '<li class="' + CSS_TREE_NODE + '"></li>',
-    NODE_CONTENT_TEMPLATE = '<div class="' + CSS_TREE_NODE_CONTENT + '"></div>';
+    NODE_CONTENT_TEMPLATE = '<div tabindex="0" class="' + CSS_TREE_NODE_CONTENT + '"></div>';
 
 /**
  * A base class for TreeNode, providing:

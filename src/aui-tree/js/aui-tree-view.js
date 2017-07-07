@@ -349,50 +349,62 @@ var TreeView = A.Component.create({
             var currentDOMNode = event.currentTarget.getDOM();
             var treeNode = instance.getNodeByChild(event.currentTarget);
 
-            var classNames = A.one('#' + currentDOMNode.parentNode.id + ' ul li').get('firstChild').get('className');
             var currentCollapsed = currentDOMNode.className.includes('tree-collapsed');
             var nextNode = currentDOMNode;
             var ownerTree = treeNode.get('ownerTree');
             var prevNode = currentDOMNode;
-            var treeHitArea = contentBox.one('.' + CSS_TREE_HITAREA);
+
 
             event.preventDefault();
 
-            if (event.keyCode === 38) {                                                 // Up Arrow - select last
+            if (event.keyCode === 38) {                                         // Up Arrow - select last
                 if (!currentDOMNode.className.includes('tree-node-leaf')) {
                     if (currentDOMNode.parentNode.previousSibling) {
-                        // var treeNode = instance.getNodeByChild(event.currentTarget);
                         prevNode = currentDOMNode.parentNode.previousSibling.firstChild.firstChild;
                     }
-
-                    if (prevNode) {
-                        prevNode.focus();
-                        currentDOMNode = prevNode;
+                }
+                else {
+                    if (currentDOMNode.parentNode.previousSibling) {
+                        prevNode = currentDOMNode.parentNode.previousSibling.firstChild;
+                    }
+                    else {
+                        prevNode = currentDOMNode.parentNode.parentNode.parentNode.firstChild;
                     }
                 }
+                prevNode.focus();
+                currentDOMNode = nextNode;
             }
-            else if (event.keyCode === 40) {                                            // Down Arrow - select next
+            else if (event.keyCode === 40) {                                    // Down Arrow - select next
                 if (!currentDOMNode.className.includes('tree-node-leaf')) {
-                    if(currentDOMNode.parentNode.nextSibling) {
+                    if (currentDOMNode.parentNode.nextSibling) {
                         nextNode = currentDOMNode.parentNode.nextSibling.firstChild.firstChild;
                     }
-
-                    if (nextNode){
-                        nextNode.focus();
-                        currentDOMNode = nextNode;
-
-                    }
                 }
+                else {
+                    if (currentDOMNode.parentNode.nextSibling) {
+                        nextNode = currentDOMNode.parentNode.nextSibling.firstChild;
+                    }
+                    else {
+                        nextNode = currentDOMNode.parentNode.parentNode.parentNode.nextSibling.firstChild;                    }
+                }
+                nextNode.focus();
+                currentDOMNode = nextNode;
             }
-            else if (event.keyCode === 37) {                                            // Left Arrow - select ancestor and collapse
+            else if (event.keyCode === 37) {                                    // Left Arrow - select ancestor and collapse
                 if (currentDOMNode.className.includes('tree-expanded')) {
                     treeNode.set('expanded', false);
                 }
+
+                if (currentDOMNode.className.includes('tree-node-leaf')) {
+                    treeNode.set('expanded', false);
+                    currentDOMNode.parentNode.parentNode.parentNode.firstChild.focus();
+                }
             }
-            else if (event.keyCode === 39) {                                            // Right Arrow - expand current and select first child
+            else if (event.keyCode === 39) {                                    // Right Arrow - expand current and select first child
                 if (currentDOMNode.className.includes('tree-collapsed')) {
                     treeNode.set('expanded', true);
                 }
+                currentDOMNode.nextSibling.firstChild.firstChild.focus();
                 instance._onKeyNodeEl(treeNode);
             }
 
