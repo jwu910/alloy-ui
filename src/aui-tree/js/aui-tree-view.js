@@ -328,10 +328,7 @@ var TreeView = A.Component.create({
             boundingBox.delegate('dblclick', A.bind(instance._onClickHitArea, instance), '.' + CSS_TREE_ICON);
             boundingBox.delegate('dblclick', A.bind(instance._onClickHitArea, instance), '.' + CSS_TREE_LABEL);
             // arrow key navigation
-            boundingBox.delegate('key', A.bind(instance._handleArrowKey, instance), '38', '.' + CSS_TREE_NODE_CONTENT); // Up Arrow
-            boundingBox.delegate('key', A.bind(instance._handleArrowKey, instance), '40', '.' + CSS_TREE_NODE_CONTENT); // Down Arrow
-            boundingBox.delegate('key', A.bind(instance._handleArrowKey, instance), '37', '.' + CSS_TREE_NODE_CONTENT); // Left Arrow
-            boundingBox.delegate('key', A.bind(instance._handleArrowKey, instance), '39', '.' + CSS_TREE_NODE_CONTENT); // Right Arrow
+            boundingBox.delegate('key', A.bind(instance._handleArrowKey, instance), '37,38,39,40', '.' + CSS_TREE_NODE_CONTENT);
             // other delegations
             boundingBox.delegate(
                 'mouseenter', A.bind(instance._onMouseEnterNodeEl, instance), '.' + CSS_TREE_NODE_CONTENT);
@@ -350,64 +347,79 @@ var TreeView = A.Component.create({
             var treeNode = instance.getNodeByChild(event.currentTarget);
 
             var currentCollapsed = currentDOMNode.className.includes('tree-collapsed');
+            var currentExpanded  = currentDOMNode.className.includes('tree-expanded');
+            var currentIsLeaf = currentDOMNode.className.includes('tree-node-leaf');
+            var currentParent = currentDOMNode.parentNode.parentNode;
             var nextNode = currentDOMNode;
-            var ownerTree = treeNode.get('ownerTree');
+            var nextParent = currentDOMNode.parentNode.nextSibling;
             var prevNode = currentDOMNode;
-
+            var prevParent = currentDOMNode.parentNode.previousSibling;
 
             event.preventDefault();
 
-            if (event.keyCode === 38) {                                         // Up Arrow - select last
+            // Up Arrow - select last
+            if (event.keyCode === 38) {
                 if (!currentDOMNode.className.includes('tree-node-leaf')) {
-                    if (currentDOMNode.parentNode.previousSibling) {
-                        prevNode = currentDOMNode.parentNode.previousSibling.firstChild.firstChild;
+                    if (prevParent) {
+                        prevNode = prevParent.firstChild.firstChild;
                     }
                 }
                 else {
-                    if (currentDOMNode.parentNode.previousSibling) {
-                        prevNode = currentDOMNode.parentNode.previousSibling.firstChild;
+                    if (prevParent) {
+                        prevNode = prevParent.firstChild;
                     }
                     else {
                         prevNode = currentDOMNode.parentNode.parentNode.parentNode.firstChild;
                     }
                 }
+
                 prevNode.focus();
-                currentDOMNode = nextNode;
             }
-            else if (event.keyCode === 40) {                                    // Down Arrow - select next
-                if (!currentDOMNode.className.includes('tree-node-leaf')) {
-                    if (currentDOMNode.parentNode.nextSibling) {
-                        nextNode = currentDOMNode.parentNode.nextSibling.firstChild.firstChild;
+
+            // Down Arrow - select next
+            else if (event.keyCode === 40) {
+                if (!currentIsLeaf) {
+                    if (nextParent) {
+                        nextNode = nextParent.firstChild.firstChild;
                     }
                 }
                 else {
-                    if (currentDOMNode.parentNode.nextSibling) {
-                        nextNode = currentDOMNode.parentNode.nextSibling.firstChild;
+                    if (nextParent) {
+                        nextNode = nextParent.firstChild;
                     }
                     else {
-                        nextNode = currentDOMNode.parentNode.parentNode.parentNode.nextSibling.firstChild;                    }
-                }
-                nextNode.focus();
-                currentDOMNode = nextNode;
-            }
-            else if (event.keyCode === 37) {                                    // Left Arrow - select ancestor and collapse
-                if (currentDOMNode.className.includes('tree-expanded')) {
-                    treeNode.set('expanded', false);
+
+                        nextNode = currentParent.parentNode.nextSibling.firstChild;
+                    }
                 }
 
-                if (currentDOMNode.className.includes('tree-node-leaf')) {
-                    treeNode.set('expanded', false);
-                    currentDOMNode.parentNode.parentNode.parentNode.firstChild.focus();
-                }
+                nextNode.focus();
             }
-            else if (event.keyCode === 39) {                                    // Right Arrow - expand current and select first child
-                if (currentDOMNode.className.includes('tree-collapsed')) {
+
+            // Left Arrow - select ancestor and collapse
+            else if (event.keyCode === 37) {
+                if (currentExpanded) {
+                    // need to close
+                }
+
+                if (currentIsLeaf) {
+                    currentDOMNode = currentParent.parentNode.firstChild;
+                }
+
+                currentDOMNode.focus();
+                treeNode.set('expanded', false);
+            }
+
+            // Right Arrow - expand current and select first child
+            else if (event.keyCode === 39) {
+                if (currentCollapsed) {
                     treeNode.set('expanded', true);
                 }
-                currentDOMNode.nextSibling.firstChild.firstChild.focus();
-                instance._onKeyNodeEl(treeNode);
-            }
 
+                if (currentDOMNode.nextSibling.firstChild) {
+                    currentDOMNode.nextSibling.firstChild.firstChild.focus();
+                }
+            }
         },
 
         /**
@@ -416,16 +428,20 @@ var TreeView = A.Component.create({
          * @method _onKeyNodeEl
          * @protected
          */
-         _onKeyNodeEl: function(treeNode) {
-            if (!treeNode.isSelected()) {
-                var lastSelected = this.get('lastSelected');
+         _onKeyNodeEl: function(event) {
+            var treeNode = this.getNodeByChild(event.currentTarget);
 
-                // select drag node
-                if (lastSelected) {
-                    lastSelected.unselect();
+            if (treeNode) {
+                if (!treeNode.isSelected()) {
+                    var lastSelected = this.get('lastSelected');
+
+                    // select drag node
+                    if (lastSelected) {
+                        lastSelected.unselect();
+                    }
+
+                    treeNode.select();
                 }
-
-                treeNode.select();
             }
          },
 
@@ -499,8 +515,10 @@ var TreeView = A.Component.create({
         _toggleTreeContent: function(event) {
             var treeNode = this.getNodeByChild(event.currentTarget);
 
+            event.preventDefault();
+
             if (treeNode) {
-                if (event.target.test('.' + CSS_TREE_HITAREA)) {
+                if (event.target.test('.' + CSS_TREE_HITAREA) || event.target.test('.' + CSS_TREE_NODE_CONTENT)) {
                     treeNode.toggle();
 
                     if (!this.get('selectOnToggle')) {
