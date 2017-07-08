@@ -1,6 +1,7 @@
 {
     "aui-tree": {
         "use": [
+            "aui-aria",
             "aui-tree-data",
             "aui-tree-io",
             "aui-tree-node",
@@ -11,6 +12,7 @@
 
     "aui-tree-data": {
         "requires": [
+            "aui-aria",
             "aui-base-core",
             "aui-base-lang",
             "aui-node-base",
@@ -21,6 +23,7 @@
 
     "aui-tree-io": {
         "requires": [
+            "aui-aria",
             "aui-component",
             "aui-io"
         ]
@@ -28,6 +31,7 @@
 
     "aui-tree-node": {
         "requires": [
+            "aui-aria",
             "json",
             "querystring-stringify",
             "aui-tree-data",
@@ -45,6 +49,7 @@
 
     "aui-tree-view": {
         "requires": [
+            "aui-aria",
             "dd-delegate",
             "dd-proxy",
             "widget",
