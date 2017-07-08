@@ -43,7 +43,7 @@ var Lang = A.Lang,
     CSS_ICON_OK_SIGN = getCN('glyphicon', 'ok', 'sign'),
     CSS_ICON_CHECK = getCN('glyphicon', 'check'),
 
-    HIT_AREA_TPL = '<span tabindex="0" class="' + CSS_TREE_HITAREA + '"></span>',
+    HIT_AREA_TPL = '<span class="' + CSS_TREE_HITAREA + '"></span>',
     ICON_TPL = '<span class="' + CSS_TREE_ICON + '"></span>',
     LABEL_TPL = '<span class="' + CSS_TREE_LABEL + '"></span>',
     NODE_CONTAINER_TPL = '<ul></ul>',
@@ -334,6 +334,29 @@ var TreeNode = A.Component.create({
         rendered: {
             validator: isBoolean,
             value: false
+        },
+
+        /**
+         * Sets the `aria-role` for treeitem.
+         *
+         * @attribute role
+         * @type String
+         */
+        role: {
+            value: 'treeitem',
+            validator: Lang.isString
+        },
+
+         /**
+         * If aria is true, use aria.
+         *
+         * @default 'true'
+         * @type Boolean
+         */
+        useARIA: {
+            validator: Lang.isBoolean,
+            value: true,
+            writeOnce: 'initOnly'
         }
     },
 
@@ -452,6 +475,12 @@ var TreeNode = A.Component.create({
             var instance = this;
 
             instance._syncIconUI();
+
+            if (instance.get('useARIA')) {
+                instance.plug(A.Plugin.Aria, {
+                    roleName: instance.get('role')
+                });
+            }
         },
 
         /**
@@ -543,7 +572,11 @@ var TreeNode = A.Component.create({
                 );
 
                 if (expanded) {
+                    contentBox.set('aria-expanded', true);
                     instance.expand();
+                }
+                else {
+                    contentBox.set('aria-expanded', false);
                 }
             }
 
@@ -678,8 +711,10 @@ var TreeNode = A.Component.create({
          */
         collapse: function() {
             var instance = this;
+            var contentBox = instance.get('contentBox');
 
             instance.set('expanded', false);
+            contentBox.set('aria-expanded', false);
         },
 
         /**
@@ -714,8 +749,10 @@ var TreeNode = A.Component.create({
          */
         expand: function() {
             var instance = this;
+            var contentBox = instance.get('contentBox');
 
             instance.set('expanded', true);
+            contentBox.set('aria-expanded', true);
         },
 
         /**
