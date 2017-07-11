@@ -491,6 +491,8 @@ var SchedulerTableView = A.Component.create({
                 rowNode.append(evtColNode);
             });
 
+            A.all('.scheduler-event').set('tabIndex', 0);
+
             return renderedEvents ? rowNode : null;
         },
 
@@ -828,6 +830,10 @@ var SchedulerTableView = A.Component.create({
 
                 if (todayCel) {
                     todayCel.addClass(CSS_SVT_COLGRID_TODAY);
+                    A.one('.' + CSS_SVT_COLGRID_TODAY).set('tabIndex', 0);
+                }
+                else {
+                    A.one('.' + CSS_SVT_COLGRID_TODAY).set('tabIndex', -1);
                 }
             }
         },
