@@ -44,6 +44,7 @@ var CSS_SCHEDULER_VIEW_ = A.getClassName('scheduler-base', 'view', ''),
     CSS_ICON_CHEVRON_LEFT = getCN('glyphicon', 'chevron', 'left'),
     CSS_SCHEDULER_VIEWS = getCN('scheduler-base', 'views'),
 
+    SCHEDULER_CONTAINER = ".scheduler-view-table-row-container",
     TPL_SCHEDULER_CONTROLS = '<div class="col-xs-7 ' + CSS_SCHEDULER_CONTROLS + '"></div>',
     TPL_SCHEDULER_HD = '<div class="row ' + CSS_SCHEDULER_HD + '"></div>',
     TPL_SCHEDULER_ICON_NEXT = '<button aria-label="{ariaLabel}"" role="button" type="button" class="' + [CSS_SCHEDULER_ICON_NEXT, CSS_BTN,
@@ -588,6 +589,19 @@ var SchedulerBase = A.Component.create({
                     next: 'down:39',
                     previous: 'down:37'
                 },
+                circular: false
+            },
+            writeOnce: 'initOnly'
+        },
+
+        focusmanagerDates: {
+            value: {
+                descendants: 'td.scheduler-view-table-colgrid',
+                keys: {
+                    next: 'down:39',
+                    previous: 'down:37'
+                },
+                focusClass: 'focus',
                 circular: false
             },
             writeOnce: 'initOnly'
@@ -1384,8 +1398,10 @@ var SchedulerBase = A.Component.create({
         _plugFocusManager: function() {
             var instance = this;
 
+
             instance.viewsNode.plug(A.Plugin.NodeFocusManager, this.get('focusmanager'));
             instance.navNode.plug(A.Plugin.NodeFocusManager, this.get('focusmanager'));
+            A.one(SCHEDULER_CONTAINER).plug(A.Plugin.NodeFocusManager, this.get('focusmanagerDates'));
         },
 
         /**

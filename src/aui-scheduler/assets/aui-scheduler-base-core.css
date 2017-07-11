@@ -1,4 +1,7 @@
 /* scheduler-base */
+td.focus {
+    background: #f6f6f6;
+}
 .scheduler-base-content {
     overflow: hidden;
 }
