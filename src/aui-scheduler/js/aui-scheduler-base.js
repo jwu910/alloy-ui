@@ -670,6 +670,18 @@ var SchedulerBase = A.Component.create({
         },
 
         /**
+         * Stores a trigger.
+         *
+         * @attribute trigger
+         * @type {String}
+         * @writeOnce
+         */
+        trigger: {
+            validator: isString,
+            writeOnce: true
+        },
+
+        /**
          * Contains the list of views belonging to this `Scheduler`.
          *
          * @attribute views
@@ -958,7 +970,7 @@ var SchedulerBase = A.Component.create({
         bindUI: function() {
             var instance = this;
 
-            instance._bindDelegate();
+            // instance._bindDelegate();
         },
 
         /**
@@ -1207,6 +1219,8 @@ var SchedulerBase = A.Component.create({
             instance._uiSetActiveView(activeView);
 
             instance._plugFocusManager();
+
+            instance._bindDelegate();
         },
 
         /**
@@ -1217,14 +1231,28 @@ var SchedulerBase = A.Component.create({
          */
         _bindDelegate: function() {
             var instance = this;
+            var trigger = instance.get('trigger');
 
-            instance.controlsNode.delegate('click', instance._onClickPrevIcon, '.' + CSS_SCHEDULER_ICON_PREV,
-                instance);
-            instance.controlsNode.delegate('click', instance._onClickNextIcon, '.' + CSS_SCHEDULER_ICON_NEXT,
-                instance);
+            instance.controlsNode.delegate('click', instance._onClickPrevIcon, '.' + CSS_SCHEDULER_ICON_PREV, instance);
+            instance.controlsNode.delegate('click', instance._onClickNextIcon, '.' + CSS_SCHEDULER_ICON_NEXT, instance);
             instance.controlsNode.delegate('click', instance._onClickToday, '.' + CSS_SCHEDULER_TODAY, instance);
+
+            instance.bodyNode.delegate('key', A.bind('_handleKeyEvent', instance), 'enter', trigger);
         },
 
+        _handleKeyEvent: function(event) {
+            var instance = this;
+
+
+console.log(event);
+
+            if (event.keyCode === 13) {
+
+
+                event.preventDefault();
+            }
+
+        },
         /**
          * Creates the given `SchedulerView`'s trigger `Node`.
          *
