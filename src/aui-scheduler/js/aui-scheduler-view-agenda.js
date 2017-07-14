@@ -486,6 +486,8 @@ var SchedulerAgendaView = A.Component.create({
 
                 limitDate = DateMath.add(viewDate, DateMath.DAY, daysCount-1),
 
+                lastWeek = DateMath.add(viewDate, DateMath.DAY, -7),
+
                 eventsMap = {};
 
             scheduler.eachEvent(
@@ -506,7 +508,7 @@ var SchedulerAgendaView = A.Component.create({
                     }
 
                     while (displayDate.getTime() <= endDate.getTime()) {
-                        if (displayDate.getTime() >= viewDate.getTime()) {
+                        if (displayDate.getTime() >= lastWeek.getTime()) {
                             dayTS = DateMath.safeClearTime(displayDate).getTime();
 
                             if (!eventsMap[dayTS]) {
