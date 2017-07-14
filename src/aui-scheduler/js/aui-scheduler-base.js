@@ -1237,22 +1237,8 @@ var SchedulerBase = A.Component.create({
             instance.controlsNode.delegate('click', instance._onClickNextIcon, '.' + CSS_SCHEDULER_ICON_NEXT, instance);
             instance.controlsNode.delegate('click', instance._onClickToday, '.' + CSS_SCHEDULER_TODAY, instance);
 
-            instance.bodyNode.delegate('key', A.bind('_handleKeyEvent', instance), 'enter', trigger);
         },
 
-        _handleKeyEvent: function(event) {
-            var instance = this;
-
-
-console.log(event);
-
-            if (event.keyCode === 13) {
-
-
-                event.preventDefault();
-            }
-
-        },
         /**
          * Creates the given `SchedulerView`'s trigger `Node`.
          *

@@ -449,6 +449,8 @@ var SchedulerEventRecorder = A.Component.create({
 
             schedulerBB.delegate('click', A.bind(instance._onClickSchedulerEvent, instance), '.' +
                 CSS_SCHEDULER_EVENT);
+
+            schedulerBB.on('keypress', instance._onKeySchedulerEvent);
         },
 
         /**
@@ -646,6 +648,33 @@ var SchedulerEventRecorder = A.Component.create({
             }
 
             event.preventDefault();
+        },
+
+        /**
+         * Handles `key` event on the scheduler.
+         *
+         * @method _onKeySchedulerEvent
+         * @param {EventFacade} event
+         * @protected
+         */
+        _onKeySchedulerEvent: function(event) {
+            var instance = this;
+            var evt = event.currentTarget.getData('scheduler-event'); // DEBUG this is undefined for some reason
+
+            if (event.keyCode === 13) {
+console.log('enter key fired!');
+
+                event.preventDefault();
+                if (evt) { // DEBUG this is not being invoked because evt undefined
+                    instance.set('event', evt, {
+                        silent: true
+                    });
+
+                    instance.showPopover(event.currentTarget);
+
+                    instance.get('node').remove();
+
+}            }
         },
 
         /**
