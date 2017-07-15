@@ -28,6 +28,12 @@
             ]
         },
 
+        "aui-scheduler-view-agenda-custom": {
+            "jsfiles": [
+                "js/aui-scheduler-view-agenda-custom.js"
+            ]
+        },
+
         "aui-scheduler-view-day": {
             "jsfiles": [
                 "js/aui-scheduler-view-day.js"

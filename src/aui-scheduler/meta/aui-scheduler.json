@@ -5,6 +5,7 @@
             "aui-scheduler-base",
             "aui-scheduler-event-recorder",
             "aui-scheduler-view-agenda",
+            "aui-scheduler-view-agenda-custom",
             "aui-scheduler-view-day",
             "aui-scheduler-view-month",
             "aui-scheduler-view-table-dd",
@@ -56,6 +57,13 @@
     "aui-scheduler-view-agenda": {
         "requires": [
             "aui-scheduler-base"
+        ],
+        "skinnable": true
+    },
+
+    "aui-scheduler-view-agenda-custom": {
+        "requires": [
+            "aui-scheduler-view-agenda"
         ],
         "skinnable": true
     },
