@@ -7,6 +7,7 @@
             "aui-scheduler-view-agenda",
             "aui-scheduler-view-day",
             "aui-scheduler-view-month",
+            "aui-scheduler-view-month-custom",
             "aui-scheduler-view-table-dd",
             "aui-scheduler-view-table",
             "aui-scheduler-view-week",
@@ -93,6 +94,12 @@
             "aui-scheduler-base"
         ],
         "skinnable": true
+    },
+
+    "aui-scheduler-view-month-custom": {
+        "requires": [
+            "aui-scheduler-view-table"
+        ]
     },
 
     "aui-scheduler-view-week": {

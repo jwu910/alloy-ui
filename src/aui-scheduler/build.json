@@ -52,6 +52,12 @@
             ]
         },
 
+        "aui-scheduler-view-month-custom": {
+            "jsfiles": [
+                "js/aui-scheduler-view-month-custom.js"
+            ]
+        },
+
         "aui-scheduler-view-week": {
             "jsfiles": [
                 "js/aui-scheduler-view-week.js"
