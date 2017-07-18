@@ -14,6 +14,8 @@ var Lang = A.Lang,
 
     DateMath = A.DataType.DateMath,
 
+    defaultDescriptionHint = A.SchedulerEvents.ATTRS.defaultDescriptionHint.value,
+
     getCN = A.getClassName,
 
     CSS_FORM_CONTROL = getCN('form', 'control'),
@@ -140,7 +142,7 @@ var SchedulerEventRecorder = A.Component.create({
             setter: function(val) {
                 return A.merge({
                         'delete': 'Delete',
-                        'description-hint': 'e.g., Dinner at Brian\'s',
+                        'description-hint': defaultDescriptionHint,
                         cancel: 'Cancel',
                         description: 'Description',
                         edit: 'Edit',

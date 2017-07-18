@@ -200,6 +200,17 @@ A.SchedulerEvents = A.Base.create('scheduler-events', A.ModelList, [], {
      */
     ATTRS: {
         /**
+         * Default text for event creation description.
+         *
+         * @attribute defaultDescriptionHint
+         * @default 'Dinner at Brian\'s'
+         * @type {String}
+         */
+        defaultDescriptionHint: {
+            value: 'Dinner at Brian\'s'
+        },
+
+        /**
          * The original list of items.
          *
          * @attribute originalItems
