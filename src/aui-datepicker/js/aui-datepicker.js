@@ -245,7 +245,7 @@ A.mix(DatePickerBase.prototype, {
 
         instance.clearSelection(true);
 
-        instance.selectDates(instance.getParsedDatesFromInputValue());
+        instance.selectDatesFromInputValue(instance.getParsedDatesFromInputValue());
     },
 
     /**
@@ -270,6 +270,27 @@ A.mix(DatePickerBase.prototype, {
     },
 
     /**
+     * Selects dates in the 'Calendar' while only allowing
+     * the calendar to fire 'selectionChange' once.
+     *
+     * @method selectDatesFromInputValue
+     * @param dates
+     */
+    selectDatesFromInputValue: function(dates) {
+        var instance = this,
+            calendar = instance.getCalendar();
+
+        A.Array.each(
+            dates,
+            function(date) {
+                calendar._addDateToSelection(date, true);
+            }
+        );
+
+        calendar._fireSelectionChange();
+    },
+
+    /**
      * TODO. Wanna help? Please send a Pull Request.
      *
      * @method _afterCalendarSelectionChange
@@ -277,11 +298,20 @@ A.mix(DatePickerBase.prototype, {
      * @protected
      */
     _afterCalendarSelectionChange: function(event) {
-        var instance = this;
+        var instance = this,
+            newDates,
+            newSelection = event.newSelection,
+            prevDates = instance.getSelectedDates() || [];
 
-        instance.fire(SELECTION_CHANGE, {
-            newSelection: event.newSelection
-        });
+        newDates = newSelection.concat(prevDates);
+
+        newDates = A.Array.dedupe(newDates);
+
+        if (newDates.length !== prevDates.length || newSelection.length < prevDates.length) {
+            instance.fire('selectionChange', {
+                newSelection: newSelection
+            });
+        }
     },
 
     /**
@@ -296,10 +326,6 @@ A.mix(DatePickerBase.prototype, {
             selectionMode = calendar.get('selectionMode');
 
         instance._setCalendarToFirstSelectedDate();
-
-        if (instance.get('autoHide') && (selectionMode !== 'multiple')) {
-            instance.hide();
-        }
     },
 
     /**
