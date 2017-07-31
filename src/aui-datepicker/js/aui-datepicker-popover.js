@@ -141,6 +141,20 @@ A.mix(DatePickerPopover.prototype, {
     /**
      * TODO. Wanna help? Please send a Pull Request.
      *
+     * @method _handleEnterKeyPopover
+     */
+    _handleEnterKeyPopover: function(event) {
+        var instance = this;
+
+        if (event.isKey('enter')) {
+
+            instance.hide();
+        }
+    },
+
+    /**
+     * TODO. Wanna help? Please send a Pull Request.
+     *
      * @method _isActiveInputFocused
      * @protected
      */
