@@ -107,6 +107,9 @@ A.mix(DatePickerPopover.prototype, {
             popover.get(BOUNDING_BOX).on(
                 CLICKOUTSIDE, instance._onPopoverClickOutside, instance);
 
+            popover.get(BOUNDING_BOX).on(
+                'keydown', instance._handleKeyEvent, instance);
+
             instance.popover = popover;
         }
 
@@ -136,6 +139,21 @@ A.mix(DatePickerPopover.prototype, {
     },
 
     /**
+     * Sets the `popover` value by merging its object with another properties.
+     *
+     * @method _handleKeyEvent
+     */
+    _handleKeyEvent: function(event) {
+        var instance = this;
+
+        if (event.isKey('esc')) {
+            event.stopPropagation();
+
+            instance.hide();
+        }
+    },
+
+    /**
      * TODO. Wanna help? Please send a Pull Request.
      *
      * @method _isActiveInputFocused
@@ -161,7 +179,6 @@ A.mix(DatePickerPopover.prototype, {
             activeInput = instance.get(ACTIVE_INPUT);
 
         if (activeInput && (!instance._isActiveInputFocused() && !activeInput.contains(target))) {
-
             instance.hide();
         }
     },
